@@ -1,0 +1,39 @@
+<style>
+  .submit-btn {
+    background: #d1683b;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 30px;
+    color: #fff;
+  }
+</style>
+
+<body style="background: #e1cdc5;">
+
+  <div class="container" style="margin-top: 70px;width:400px;background:#fff;padding:30px">
+    <div class="row mb-3">
+      <h2 style="color: #ea895f;">Register</h2>
+    </div>
+    <form action="/users/signup" method="post">
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label" style="color: #ea895f;">User name</label>
+        <input type="text" name="userName" class="form-control" id="exampleInputPassword1">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label" style="color: #ea895f;">Email address</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label" style="color: #ea895f;">Mobile number</label>
+        <input type="text" name="mobile" class="form-control" id="exampleInputPassword1">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label" style="color: #ea895f;">Password</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <button type="submit" class="submit-btn mb-2">Submit</button>
+      <a href="/users/login" class="text-success" style="text-decoration:none">Already a user? Login </a>
+
+    </form>
+  </div>
+</body>

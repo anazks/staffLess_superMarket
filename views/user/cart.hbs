@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+</head>
+<body>
+  <div class="container" style="margin-top:10px;min-height:45vh">
+  <h1 class="text-center m-3 p-3">Buy Now</h1>
+  {{#if products}}
+  <h2 class="text-end">Total Price : ₹{{total}}</h2>
+  <strike>
+    <h3 class="text-end text-secondary">Total MRP : ₹{{totalMRP}}</h2>
+  </strike>
+  <h3 class="text-end text-success">You will save : ₹{{saved}}</h2>
+    <div class="card mb-3" style="max-width:70%;">
+      <div class="row g-0  ">
+        {{#each products}}
+        <div class="col-md-4 cart" style="margin-top: 0px;border:none">
+          <img src="/images/product/{{item._id}}.jpg" class="img-fluid rounded-start" style="height: 100%;" alt="QR code Not availble">
+          
+        </div>
+    
+        <div class="col-md-8 cart" style="margin-top: 0px;border:none;background:#f5b397;display:flex">
+          <div class="card-body">
+            <h5 class="card-title">{{item.productName}}</h5>
+            <p class="card-text">{{item.description}}</p>
+            <h6>Price:₹{{item.price}}</h6>
+            <h6 class="card-title">Quantity:{{quantity}}</h6>
+        <a class="btn btn-light" href="/users/buynow/{{item._id}}/{{quantity}}" role="button">Online Puchase</a>
+        <span id="itemId" style="display: none;">{{item._id}}</span>
+        <h3>Mobile users</h3>
+          <div id="qrcode"></div>
+          </div>
+          <div>
+          <img src="/images/qr/{{item._id}}.png" class="img-fluid rounded-start" style="height: 100%;" alt="...">
+
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{else}}
+    <h1 class="text-center m-3 p-3 text-secondary">Your Cart is Empty ....</h1>
+    {{/if}}
+
+</div>
+
+<section class="footer bg-dark mt-5 text-light" style="height:30vh">
+  <div class="footer-wrapper">
+    <h2 class="footer-title text-center pt-3">
+      CONTACT US
+    </h2>
+    <div class="icons-group d-flex justify-content-center mt-5">
+      <i class="fa-solid fa-envelope me-5 fa-3x" class="footer-icon"></i>
+      <i class="fa-brands fa-twitter me-5 fa-3x" class="footer-icon"></i>
+      <i class="fa-brands fa-facebook fa-3x" class="footer-icon"></i>
+    </div>
+  </div>
+</section>
+  
+
+<script>
+        // Get the div where the QR code will be displayed
+        const qrCodeDiv = document.getElementById('qrcode');
+
+        // Create QR code instance
+        const qr = qrcode(0, 'M');
+        
+        // Set data to encode
+        let itemId = document.getElementById('itemId').innerHTML;
+        qr.addData(itemId);
+        
+        // Make the QR code
+        qr.make();
+        
+        // Get QR code as base64
+        const qrCodeBase64 = qr.createDataURL(8, 0);
+        
+        // Create image element
+        const qrImage = document.createElement('img');
+        
+        // Set the src attribute to the base64 string
+        qrImage.src = qrCodeBase64;
+        
+        // Append the image to the div
+        qrCodeDiv.appendChild(qrImage);
+    </script>
+</body>
+</html>

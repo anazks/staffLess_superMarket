@@ -1,0 +1,28 @@
+<div class="container p-2 bg-light mt-5">
+    <h2 class="text-center m-3">Medicinal Informations List</h2>
+    <table class="table bg-light p-2">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Consultant Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each medBlogs}}
+            <tr>
+                <td scope="row">{{title}}</td>
+                <td>{{date}}</td>
+                <td>{{consultantName}}</td>
+                <td>{{status}}</td>
+                <td>
+
+                    <a href="/delete-med-blog/{{_id}}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

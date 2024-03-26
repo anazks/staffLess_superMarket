@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card mb-3" style="max-width:70%;">
+      <div class="row g-0  ">
+        {{#each product}}
+        <div class="col-md-4 cart" style="margin-top: 0px;border:none">
+          <img src="/images/product/{{_id}}.jpg" class="img-fluid rounded-start" style="height: 100%;" alt="QR code Not availble">
+          
+        </div>
+        <div class="col-md-8 cart" style="margin-top: 0px;border:none;background:#f5b397;display:flex">
+          <div class="card-body">
+            <h5 class="card-title">{{productName}}</h5>
+            <p class="card-text">{{description}}</p>
+            <h6>Price:₹{{price}}</h6>
+            <h6 class="card-title">Quantity:{{quantity}}</h6>
+        <a class="btn btn-light" href="/users/buynow/{{_id}}/{{quantity}}" role="button">Online Puchase</a>
+        <span id="itemId" style="display: none;">{{_id}}</span>
+        <h3>Mobile users</h3>
+          <div id="qrcode"></div>
+          </div>
+          <div>
+          <img src="/images/qr/{{_id}}.png" class="img-fluid rounded-start" style="height: 100%;" alt="...">
+
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+</body>
+</html>
