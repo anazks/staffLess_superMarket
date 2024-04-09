@@ -5,53 +5,98 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-     <script src="/javascripts/html5-qrcode.min.js"></script>
+    <script src="/javascripts/html5-qrcode.min.js"></script>
     <style>
-        .result{
-          background-color: green;
-          color:#fff;
-          padding:20px;
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
-        .row{
-          display:flex;
-         
+        
+        .result {
+            background-color: green;
+            color: #fff;
+            padding: 20px;
         }
-        .reader{
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        #reader {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        #result {
+            width: 100%;
             margin-top: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
         }
-      </style>
+        
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: red;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: darkred;
+        }
+        
+        @media screen and (min-width: 768px) {
+            .row {
+                flex-direction: row;
+            }
+            .col {
+                flex: 1;
+                padding: 30px;
+            }
+        }
+    </style>
 </head>
-<body style="background-color: black;">
-       <div class="row">
-  <div class="col">
-    <div style="width:500px;" id="reader"></div>
-  </div>
-  <div class="col" style="padding:30px;">
-    <h4 style="color: red;">SCAN RESULTss</h4>
-    <form action="/users/getItems" method="post">
-    <input type="text" name="id" id="result" readonly>
-    <input class="btn btn-outline-danger" type="submit">
-    </form>
-    
-    {{!-- <div id="result">Result Here</div> --}}
-  </div>
-</div>
-
-
-
-<script>
-    function onScanSuccess(qrCodeMessage) {
-         data = qrCodeMessage;
-         console.log(qrCodeMessage)
-         document.getElementById('result').value=qrCodeMessage;
-        //document.getElementById('result').innerHTML = '<span class="result">'+qrCodeMessage+'</span>';
-    }
-    function onScanError(errorMessage) {
-      //handle scan error
-    }
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", { fps: 10, qrbox: 250 });
-    html5QrcodeScanner.render(onScanSuccess, onScanError);
+<body>
+    <div class="row">
+        <div class="col">
+            <div id="reader"></div>
+        </div>
+        <div class="col">
+            <h4 style="color: red;">SCAN RESULT</h4>
+            <form action="/users/getItems" method="post">
+                <input type="text" name="id" id="result" readonly>
+                <input class="btn btn-outline-danger" type="submit">
+            </form>
+        </div>
+    </div>
+    <script>
+        function onScanSuccess(qrCodeMessage) {
+            data = qrCodeMessage;
+            console.log(qrCodeMessage)
+            document.getElementById('result').value = qrCodeMessage;
+        }
+        function onScanError(errorMessage) {
+            //handle scan error
+        }
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess, onScanError);
     </script>
 </body>
 </html>
