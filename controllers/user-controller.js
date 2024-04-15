@@ -5,6 +5,7 @@ const CartModel = require('../models/cart-model');
 const OrderModel = require('../models/order-model');
 const bcrypt = require("bcrypt");
 const productModel = require("../models/product-model");
+const cartModel = require("../models/cart-model");
 
 const getUserHomePage = async function (req, res, next) {
     try {
@@ -147,7 +148,8 @@ const getCartProducts = async (req, res) => {
     try {
         let { user } = req.session
         let { _id } = req.session.user
-        let myCart = await CartModel.findOne({ userId: _id })
+        let myCart = await CartModel.findOne({ userId: _id,status :"approved" })
+        console.log(myCart,"my cart")
         if (myCart) {
             console.log(myCart.products)
             let total = 0;
@@ -157,6 +159,7 @@ const getCartProducts = async (req, res) => {
                 totalMRP += (parseInt(p.item.mrp) * parseInt(p.quantity))
             }
             let saved = totalMRP - total;
+            console.log(myCart.products,"cartitems")
             res.render("user/cart", { products: myCart.products, user, total, totalMRP, saved })
         } else
             res.render("user/cart", { products: false, user, })
@@ -166,6 +169,47 @@ const getCartProducts = async (req, res) => {
         res.redirect("/users/home")
     }
 }
+const buyall = async (req, res) => {
+    try {
+        // Find all products in the cart for the current user
+        let products = await cartModel.find({ userId: req.session.user._id });
+
+        // Iterate over each product in the products array
+        for (let i = 0; i < products.length; i++) {
+            let product = products[i];
+
+            // Iterate over each item in the product's products array
+            for (let j = 0; j < product.products.length; j++) {
+                let item = product.products[j].item;
+                let quantity = product.products[j].quantity;
+
+                // Calculate the new stock by subtracting the quantity from the total stock (ingredients)
+                let newStock = item.ingredients - quantity;
+
+                // Update the status of the item to "ordered"
+                product.products[j].item.status = 'ordered';
+
+                // Update the quantity of the item
+                product.products[j].quantity = quantity;
+            }
+
+            // Update the stock of all items in the product
+            await cartModel.updateOne(
+                { _id: product._id },
+                { $inc: { "products.$[elem].item.ingredients": -1 } },
+                { arrayFilters: [{ "elem.item._id": { $exists: true } }] }
+            );
+        }
+
+        console.log("Status updated to 'ordered' and quantity updated for all items in the cart");
+        res.status(200).json({ message: "Status updated to 'ordered' and quantity updated for all items in the cart" });
+    } catch (error) {
+        console.error("Error updating status and quantity:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+
 const removeCartProduct = async (req, res) => {
     try {
         let { _id } = req.session.user;
@@ -325,5 +369,6 @@ module.exports = {
     addLike,
     searchProduct,
     readQR,
-    getItems
+    getItems,
+    buyall
 }

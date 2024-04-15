@@ -12,6 +12,7 @@
   {{#if products}}
   <h2 class="text-end">Total Price : ₹{{total}}</h2>
   <strike>
+      <a href="/users/buyall" class="btn btn-success">Buy All</a>
     <h3 class="text-end text-secondary">Total MRP : ₹{{totalMRP}}</h2>
   </strike>
   <h3 class="text-end text-success">You will save : ₹{{saved}}</h2>
@@ -35,7 +36,7 @@
           <div id="qrcode"></div>
           </div>
           <div>
-          <img src="/images/qr/{{item._id}}.png" class="img-fluid rounded-start" style="height: 100%;" alt="...">
+          {{!-- <img src="/images/qr/{{item._id}}.png" class="img-fluid rounded-start" style="height: 100%;" alt="..."> --}}
 
           </div>
         </div>
@@ -80,7 +81,7 @@
         const qrCodeBase64 = qr.createDataURL(8, 0);
         
         // Create image element
-        const qrImage = document.createElement('img');
+        
         
         // Set the src attribute to the base64 string
         qrImage.src = qrCodeBase64;

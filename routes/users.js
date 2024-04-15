@@ -22,7 +22,8 @@ const {
   addLike,
   searchProduct,
   readQR,
-  getItems
+  getItems,
+  buyall
 } = require("../controllers/user-controller")
 
 const { checkUser } = require("../middlewares/checkUser");
@@ -52,5 +53,6 @@ router.get('/readQR',readQR)
 
 router.post('/getItems',getItems)
 router.post('/search', checkUser, searchProduct)
+router.get('/buyall',checkUser,buyall)
 module.exports = router;
 
