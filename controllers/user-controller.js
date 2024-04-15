@@ -287,6 +287,7 @@ const searchProduct = async (req, res) => {
         res.redirect("/users/home")
     }
 }
+
 const readQR = (req,res)=>{
     try {
         res.render('user/ReacQR')
@@ -294,6 +295,7 @@ const readQR = (req,res)=>{
         console.log(error)
     }
 }
+
 const getItems = async (req,res)=>{
     try {
         let {id} = req.body;
