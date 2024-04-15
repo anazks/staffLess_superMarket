@@ -96,6 +96,7 @@ const addToCart = async (req, res) => {
     //check if cart exist 
     let { user } = req.session;
     let { id } = req.body;
+    console.log("postwrking",id,user)
     try {
         let product = await ProductModel.findOne({ _id: id });
         product.id = id;
