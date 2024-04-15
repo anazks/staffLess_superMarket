@@ -31,8 +31,10 @@
             <h6>Price:₹{{item.price}}</h6>
             <h6 class="card-title">Quantity:{{quantity}}</h6>
         <a class="btn btn-light" href="/users/buynow/{{item._id}}/{{quantity}}" role="button">Online Puchase</a>
+        <a class="btn btn-light"role="button">{{item.status}}</a>
+
         <span id="itemId" style="display: none;">{{item._id}}</span>
-        <h3>Mobile users</h3>
+        {{!-- <h3>Mobile users</h3> --}}
           <div id="qrcode"></div>
           </div>
           <div>

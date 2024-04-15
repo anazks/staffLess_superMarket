@@ -148,9 +148,9 @@ const getCartProducts = async (req, res) => {
     try {
         let { user } = req.session
         let { _id } = req.session.user
-        let myCart = await CartModel.findOne({ userId: _id,status :"approved" })
+        let myCart = await CartModel.findOne({ userId: _id })
         console.log(myCart,"my cart")
-        if (myCart) {
+        if (myCart.products.length>0) {
             console.log(myCart.products)
             let total = 0;
             let totalMRP = 0
@@ -169,45 +169,23 @@ const getCartProducts = async (req, res) => {
         res.redirect("/users/home")
     }
 }
+
 const buyall = async (req, res) => {
     try {
-        // Find all products in the cart for the current user
-        let products = await cartModel.find({ userId: req.session.user._id });
+        // Update the status of all items for the specific user
+        await cartModel.updateMany(
+            { userId: req.session.user._id }, // Match documents with the user's ID
+            { $set: { "products.$[].item.status": "ordered" } } // Update all items' status to "ordered"
+        );
 
-        // Iterate over each product in the products array
-        for (let i = 0; i < products.length; i++) {
-            let product = products[i];
-
-            // Iterate over each item in the product's products array
-            for (let j = 0; j < product.products.length; j++) {
-                let item = product.products[j].item;
-                let quantity = product.products[j].quantity;
-
-                // Calculate the new stock by subtracting the quantity from the total stock (ingredients)
-                let newStock = item.ingredients - quantity;
-
-                // Update the status of the item to "ordered"
-                product.products[j].item.status = 'ordered';
-
-                // Update the quantity of the item
-                product.products[j].quantity = quantity;
-            }
-
-            // Update the stock of all items in the product
-            await cartModel.updateOne(
-                { _id: product._id },
-                { $inc: { "products.$[elem].item.ingredients": -1 } },
-                { arrayFilters: [{ "elem.item._id": { $exists: true } }] }
-            );
-        }
-
-        console.log("Status updated to 'ordered' and quantity updated for all items in the cart");
-        res.status(200).json({ message: "Status updated to 'ordered' and quantity updated for all items in the cart" });
+        console.log("Status updated to 'ordered' for all items in the cart for the user");
+        res.status(200).json({ message: "Status updated to 'ordered' for all items in the cart for the user" });
     } catch (error) {
-        console.error("Error updating status and quantity:", error);
+        console.error("Error updating status:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
 
 
 const removeCartProduct = async (req, res) => {
