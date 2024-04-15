@@ -40,7 +40,7 @@ router.get('/logout', logout)
 router.get('/all-products', checkUser, getAllProducts)
 router.get('/all-med-blogs', checkUser, getAllMedBlogs)
 
-router.get("/addtoCart/:id", checkUser, addToCart);
+router.post("/addtoCart", checkUser, addToCart);
 router.get("/cart", checkUser, getCartProducts)
 router.get("/remove-product/:id", checkUser, removeCartProduct)
 router.get('/buynow/:id/:qty', checkUser, goToPayment)
